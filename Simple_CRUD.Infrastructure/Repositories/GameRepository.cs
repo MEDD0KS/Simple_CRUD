@@ -1,10 +1,10 @@
-﻿using Simple_CRUD.Domain.Entities;
-using Simple_CRUD.Infrastructure.Database;
+﻿using Simple_CRUD.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
+using Simple_CRUD.Domain.Entities.Game;
 
 namespace Simple_CRUD.Infrastructure.Repositories
 {
-    public class GameRepository : IRepository<Game>
+    public class GameRepository : IGameRepository
     {
         private readonly GameContext _gameContext;
 
@@ -21,6 +21,16 @@ namespace Simple_CRUD.Infrastructure.Repositories
         public void DeleteById(int id)
         {
             var removingItem = _gameContext.Games.FirstOrDefault(x => x.Id == id);
+            if (removingItem != null)
+            {
+                _gameContext.Games.Remove(removingItem);
+            }
+        }
+
+        public void DeleteByName(string name)
+        {
+            var removingItem = _gameContext.Games.FirstOrDefault(x => x.Title == name);
+            //removingItem.Genres = _gameContext.GameGenres.FirstOrDefault(x => x.GameId == )
             if (removingItem != null)
             {
                 _gameContext.Games.Remove(removingItem);
