@@ -2,6 +2,7 @@
 using Simple_CRUD.Application.Dtos;
 using Simple_CRUD.Domain.Entities.Game;
 using Simple_CRUD.Infrastructure.Repositories;
+using Simple_CRUD.Application.Mapper;
 
 namespace Simple_CRUD.Application.Services
 {
@@ -18,14 +19,13 @@ namespace Simple_CRUD.Application.Services
         {
             try
             {
-                var config = new MapperConfiguration(cfg => cfg.CreateMap<GameAddRequestDto, Game>()
-                    .ForMember("Genres", opt=>opt.MapFrom<IEnumerable<GenreAddRequestDto>>(c => c.Genres)));
+                var config = new MapperConfiguration(cfg => cfg.AddProfile<GameMappingProfile>());
                 var mapper = config.CreateMapper();
 
                 var game = mapper.Map<GameAddRequestDto, Game>(gameAddRequest);
 
-                //_gameRepository.Create(game);
-                //_gameRepository.Save();
+                _gameRepository.Create(game);
+                _gameRepository.Save();
             }
             catch
             {

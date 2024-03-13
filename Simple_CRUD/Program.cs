@@ -36,9 +36,7 @@ namespace Simple_CRUD
 
             app.MapControllerRoute(name: "default", pattern: "{controller}/{action}/{id?}");
 
-            app.MapGet("/", () => "1");
-            
-
+            app.MapGet("/", () => Results.LocalRedirect("/swagger"));  
 
             app.Run();
             

@@ -26,6 +26,20 @@ namespace Simple_CRUD.Infrastructure.Database
             optionsBuilder.UseSqlite(_connectionString, b => b.MigrationsAssembly("Simple_CRUD"));
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<GameGenre>()
+                .HasKey(x => new { x.GameId, x.GenreId });
+            modelBuilder.Entity<GameGenre>()
+                .HasOne(x => x.Game)
+                .WithMany(x => x.Genres)
+                .HasForeignKey(x => x.GameId);
+            modelBuilder.Entity<GameGenre>()
+                .HasOne(x => x.Genre)
+                .WithMany(x => x.Games)
+                .HasForeignKey(x => x.GenreId);
+        }
     }
 }
