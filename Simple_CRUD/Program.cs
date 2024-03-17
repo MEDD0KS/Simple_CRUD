@@ -2,9 +2,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
 using Simple_CRUD.Domain.Entities;
 using Simple_CRUD.Infrastructure.Database;
-using Simple_CRUD.Infrastructure.Repositories;
 using Simple_CRUD.Application.Services;
 using System;
+using Simple_CRUD.Infrastructure.Repositories.Games;
+using Simple_CRUD.Infrastructure.Repositories.Genres;
 
 namespace Simple_CRUD
 {
@@ -23,6 +24,7 @@ namespace Simple_CRUD
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddDbContext<GameContext>();
             builder.Services.AddScoped<IGameRepository,GameRepository>();
+            builder.Services.AddScoped<IGenreRepository, GenreRepository>();
             builder.Services.AddScoped<IGameService, GameService>();
 
             var app = builder.Build();

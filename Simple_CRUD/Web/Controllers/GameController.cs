@@ -22,7 +22,7 @@ namespace Simple_CRUD.Web.Controllers
         public IActionResult AddGame([FromBody] GameAddRequestDto GameAddRequest)
         {            
             //TODO - check validate status
-            var status = _gameService.AddGame(GameAddRequest);
+            var status = _gameService.AddGame(GameAddRequest).Result;
             
             if(status == ResultStatus.Error) return new StatusCodeResult(StatusCodes.Status500InternalServerError);
 
@@ -34,17 +34,6 @@ namespace Simple_CRUD.Web.Controllers
         {
             //TODO - check validate status, validate input data
             var status = _gameService.UpdateGame(gameData);
-
-            if (status == ResultStatus.Error) return new StatusCodeResult(StatusCodes.Status500InternalServerError);
-
-            return new StatusCodeResult(StatusCodes.Status200OK);
-        }
-
-        [HttpPost("api/v1/[action]")]
-        public IActionResult DeleteGame([FromBody] Game gameData)
-        {
-            //TODO - check validate status
-            var status = _gameService.DeleteGame(gameData);
 
             if (status == ResultStatus.Error) return new StatusCodeResult(StatusCodes.Status500InternalServerError);
 

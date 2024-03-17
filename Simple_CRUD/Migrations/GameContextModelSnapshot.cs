@@ -17,22 +17,7 @@ namespace Simple_CRUD.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
 
-            modelBuilder.Entity("GameGenre", b =>
-                {
-                    b.Property<int>("GamesId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("GenresId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("GamesId", "GenresId");
-
-                    b.HasIndex("GenresId");
-
-                    b.ToTable("GameGenre");
-                });
-
-            modelBuilder.Entity("Simple_CRUD.Domain.Entities.Game", b =>
+            modelBuilder.Entity("Simple_CRUD.Domain.Entities.Game.Game", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,7 +49,18 @@ namespace Simple_CRUD.Migrations
                     b.ToTable("Games");
                 });
 
-            modelBuilder.Entity("Simple_CRUD.Domain.Entities.Genre", b =>
+            modelBuilder.Entity("Simple_CRUD.Domain.Entities.Game.GameGenre", b =>
+                {
+                    b.Property<int>("GamesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("GenresId")
+                        .HasColumnType("INTEGER");
+
+                    b.ToTable("GameGenre");
+                });
+
+            modelBuilder.Entity("Simple_CRUD.Domain.Entities.Game.Genre", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -76,22 +72,10 @@ namespace Simple_CRUD.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("GameGenres");
-                });
+                    b.HasIndex("Name")
+                        .IsUnique();
 
-            modelBuilder.Entity("GameGenre", b =>
-                {
-                    b.HasOne("Simple_CRUD.Domain.Entities.Game", null)
-                        .WithMany()
-                        .HasForeignKey("GamesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Simple_CRUD.Domain.Entities.Genre", null)
-                        .WithMany()
-                        .HasForeignKey("GenresId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.ToTable("Genres");
                 });
 #pragma warning restore 612, 618
         }

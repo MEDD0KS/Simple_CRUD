@@ -12,6 +12,17 @@ namespace Simple_CRUD.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "GameGenre",
+                columns: table => new
+                {
+                    GamesId = table.Column<int>(type: "INTEGER", nullable: false),
+                    GenresId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Games",
                 columns: table => new
                 {
@@ -42,34 +53,11 @@ namespace Simple_CRUD.Migrations
                     table.PrimaryKey("PK_Genres", x => x.Id);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "GameGenre",
-                columns: table => new
-                {
-                    GamesId = table.Column<int>(type: "INTEGER", nullable: false),
-                    GenresId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GameGenre", x => new { x.GamesId, x.GenresId });
-                    table.ForeignKey(
-                        name: "FK_GameGenre_Games_GamesId",
-                        column: x => x.GamesId,
-                        principalTable: "Games",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GameGenre_Genres_GenresId",
-                        column: x => x.GenresId,
-                        principalTable: "Genres",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
-                name: "IX_GameGenre_GenresId",
-                table: "GameGenre",
-                column: "GenresId");
+                name: "IX_Genres_Name",
+                table: "Genres",
+                column: "Name",
+                unique: true);
         }
 
         /// <inheritdoc />

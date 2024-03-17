@@ -1,16 +1,15 @@
 ﻿using Simple_CRUD.Domain.Entities.Game;
 
-namespace Simple_CRUD.Infrastructure.Repositories
+namespace Simple_CRUD.Infrastructure.Repositories.Games
 {
     public interface IGameRepository
     {
         public void Create(Game item);
-        public Game? ReadById(int id);
+        public Task<Game?> GetById(int id);
         public void Update(Game item);
         public void DeleteById(int id);
         public void DeleteByName(string name);
-        public void DeleteItem(Game item);
-        public void Save();
+        public Task Save();
 
 
     }

@@ -14,12 +14,7 @@ namespace Simple_CRUD.Application.Dtos
         public string Description { get; set; }
         public DateTime RelizeDate { get; set; }
         public double Price { get; set; }
-        public List<GenreAddRequestDto> Genres { get; set; } = new();
+        public List<string> Genres { get; set; } = new();
         public double Rating { get; set; }
-    }
-
-    public class GenreAddRequestDto
-    {
-        public string Name { get; set; }
     }
 }

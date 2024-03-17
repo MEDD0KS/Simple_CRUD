@@ -14,13 +14,9 @@ namespace Simple_CRUD.Application.Mapper
         public GameMappingProfile() 
         {
             CreateMap<GameAddRequestDto, Game>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.Genres))
+                .ForMember(dest => dest.Id, opt => opt.Ignore())                
                 .ReverseMap();
 
-            CreateMap<GenreAddRequestDto, Genre>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ReverseMap();
         }
 
     }

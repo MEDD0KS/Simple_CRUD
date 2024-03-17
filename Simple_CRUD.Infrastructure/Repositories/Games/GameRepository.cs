@@ -1,8 +1,9 @@
 ﻿using Simple_CRUD.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Simple_CRUD.Domain.Entities.Game;
+using System.Xml.Linq;
 
-namespace Simple_CRUD.Infrastructure.Repositories
+namespace Simple_CRUD.Infrastructure.Repositories.Games
 {
     public class GameRepository : IGameRepository
     {
@@ -20,31 +21,24 @@ namespace Simple_CRUD.Infrastructure.Repositories
 
         public void DeleteById(int id)
         {
-            var removingItem = _gameContext.Games.FirstOrDefault(x => x.Id == id);
-            if (removingItem != null)
-            {
-                _gameContext.Games.Remove(removingItem);
-            }
+            var item = new Game() { Id = id };
+            _gameContext.Games.Remove(item);
+            //var removingItem = _gameContext.GameGenre.Where(x => x.GameId == id);
+            //_gameContext.GameGenre.RemoveRange(removingItem);
         }
 
         public void DeleteByName(string name)
         {
             var removingItem = _gameContext.Games.FirstOrDefault(x => x.Title == name);
-            //removingItem.Genres = _gameContext.GameGenres.FirstOrDefault(x => x.GameId == )
             if (removingItem != null)
             {
                 _gameContext.Games.Remove(removingItem);
             }
         }
 
-        public void DeleteItem(Game item)
+        public Task<Game?> GetById(int id)
         {
-            _gameContext.Games.Remove(item);
-        }
-
-        public Game? ReadById(int id)
-        {
-            return _gameContext.Games.FirstOrDefault(x => x.Id == id);
+            return _gameContext.Games.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public void Update(Game item)
@@ -52,11 +46,9 @@ namespace Simple_CRUD.Infrastructure.Repositories
             _gameContext.Games.Entry(item).State = EntityState.Modified;
         }
 
-        public void Save() 
+        public async Task Save()
         {
-            _gameContext.SaveChanges();
+           await _gameContext.SaveChangesAsync();            
         }
-
-
     }
 }

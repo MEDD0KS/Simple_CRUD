@@ -1,21 +1,24 @@
 ﻿using AutoMapper;
 using Simple_CRUD.Application.Dtos;
 using Simple_CRUD.Domain.Entities.Game;
-using Simple_CRUD.Infrastructure.Repositories;
 using Simple_CRUD.Application.Mapper;
+using Simple_CRUD.Infrastructure.Repositories.Games;
+using Simple_CRUD.Infrastructure.Repositories.Genres;
 
 namespace Simple_CRUD.Application.Services
 {
     public class GameService : IGameService
     {
         private readonly IGameRepository _gameRepository;
+        private readonly IGenreRepository _genreRepository;
 
-        public GameService(IGameRepository gameRepository)
+        public GameService(IGameRepository gameRepository, IGenreRepository genreRepository)
         {
             _gameRepository = gameRepository;
+            _genreRepository = genreRepository;
         }
 
-        public ResultStatus AddGame(GameAddRequestDto gameAddRequest)
+        public async Task<ResultStatus> AddGame(GameAddRequestDto gameAddRequest)
         {
             try
             {
@@ -25,21 +28,14 @@ namespace Simple_CRUD.Application.Services
                 var game = mapper.Map<GameAddRequestDto, Game>(gameAddRequest);
 
                 _gameRepository.Create(game);
-                _gameRepository.Save();
-            }
-            catch
-            {
-                return ResultStatus.Error;
-            }
-            return ResultStatus.Ok;
-        }
+                await _gameRepository.Save();
+               
+                var listGenre = _genreRepository.GetListByNames(gameAddRequest.Genres).Result;
 
-        public ResultStatus DeleteGame(Game game)
-        {
-            try
-            {
-                _gameRepository.DeleteItem(game);
-                _gameRepository.Save();
+                _genreRepository.CreateLinkGenre(gameItem: game, genreItem: listGenre);
+                
+                
+                await _gameRepository.Save();
             }
             catch
             {
@@ -51,7 +47,7 @@ namespace Simple_CRUD.Application.Services
         public ResultStatus DeleteGameByName(string name)
         {
             try
-            {
+            {     
                 _gameRepository.DeleteByName(name);
                 _gameRepository.Save();
             }
@@ -68,7 +64,7 @@ namespace Simple_CRUD.Application.Services
 
             try
             {
-                game = _gameRepository.ReadById(id);
+                game = _gameRepository.GetById(id).Result;
                 if(game == null)
                 {
                     return new Tuple<Game?, ResultStatus>(null, ResultStatus.NotFound);
